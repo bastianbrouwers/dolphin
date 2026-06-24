@@ -8,15 +8,14 @@ Use Dolphin only with media you own, have permission to archive, or are otherwis
 
 ## Preview
 
-<p>
-  <img src="assets/previews/search-dark.png" alt="Dolphin search view in dark mode" width="49%">
-  <img src="assets/previews/link-light.png" alt="Dolphin link view in light mode" width="49%">
-</p>
+### Dark Mode
+![App dark](dolphin_dark.png)
+![App search dark](dolphin_search_dark.png)
+  
+### Light Mode
 
-<p>
-  <img src="assets/previews/link-dark.png" alt="Dolphin link view in dark mode" width="49%">
-  <img src="assets/previews/search-light.png" alt="Dolphin search view in light mode" width="49%">
-</p>
+![App light](dolphin_light.png)
+![App search light](dolphin_search_light.png)
 
 ## Requirements
 
