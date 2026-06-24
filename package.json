@@ -1,0 +1,75 @@
+{
+  "name": "dolphin",
+  "version": "0.1.0",
+  "author": "Bastian Brouwers",
+  "private": true,
+  "description": "Dolphin is a small desktop media utility for saving audio from supported online video links and search results. ",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "concurrently -k \"nuxt dev --host 127.0.0.1 --port 3000\" \"wait-on http://127.0.0.1:3000 && cross-env ELECTRON_START_URL=http://127.0.0.1:3000 electron .\"",
+    "dev:web": "nuxt dev --host 127.0.0.1 --port 3000",
+    "pack": "npm run generate && electron-builder --dir",
+    "dist": "npm run generate && electron-builder --win portable && node scripts/clean-release.cjs portable",
+    "dist:installer": "npm run generate && electron-builder --win nsis && node scripts/clean-release.cjs installer",
+    "dist:win": "npm run dist",
+    "generate": "nuxt generate",
+    "start": "electron .",
+    "typecheck": "nuxt typecheck"
+  },
+  "build": {
+    "appId": "com.local.dolphin",
+    "productName": "Dolphin",
+    "directories": {
+      "output": "release"
+    },
+    "electronLanguages": [
+      "en-US"
+    ],
+    "compression": "maximum",
+    "npmRebuild": false,
+    "files": [
+      "electron/**/*",
+      ".output/public/**/*",
+      "build/icon.ico",
+      "package.json",
+      "node_modules/youtube-dl-exec/**/*",
+      "node_modules/dargs/**/*",
+      "node_modules/tinyspawn/**/*",
+      "node_modules/is-unix/**/*"
+    ],
+    "asarUnpack": [
+      "node_modules/youtube-dl-exec/bin/**"
+    ],
+    "win": {
+      "icon": "icon.ico",
+      "target": [
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "youtube-dl-exec": "^3.0.16"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "6.12.2",
+    "@oxc-parser/binding-win32-arm64-msvc": "^0.102.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "lucide-vue-next": "^0.468.0",
+    "nuxt": "3.14.1592",
+    "shadcn-nuxt": "^2.7.4",
+    "tailwind-merge": "^2.5.4",
+    "typescript": "^5.6.3",
+    "vue": "^3.5.13",
+    "vue-tsc": "^2.1.10",
+    "wait-on": "^8.0.1"
+  }
+}

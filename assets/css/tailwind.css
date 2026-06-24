@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 18% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 18% 12%;
+    --primary: 220 18% 12%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 220 18% 12%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 220 9% 46%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 18% 88%;
+    --input: 214 18% 88%;
+    --ring: 220 18% 20%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 220 18% 9%;
+    --foreground: 210 20% 96%;
+    --card: 220 16% 12%;
+    --card-foreground: 210 20% 96%;
+    --primary: 210 20% 96%;
+    --primary-foreground: 220 18% 10%;
+    --secondary: 220 14% 18%;
+    --secondary-foreground: 210 20% 96%;
+    --muted: 220 14% 18%;
+    --muted-foreground: 218 12% 66%;
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 13% 22%;
+    --input: 220 13% 22%;
+    --ring: 210 20% 86%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .drag-region {
+    -webkit-app-region: drag;
+  }
+
+  .no-drag {
+    -webkit-app-region: no-drag;
+  }
+}
