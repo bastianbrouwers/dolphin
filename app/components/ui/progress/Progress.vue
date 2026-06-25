@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
 
-const props = withDefaults(
-  defineProps<{
-    class?: HTMLAttributes['class']
-    modelValue?: number
-  }>(),
-  {
-    modelValue: 0
-  }
-)
+const { class: className, modelValue = 0 } = defineProps<{
+  class?: HTMLAttributes['class']
+  modelValue?: number
+}>()
 
-const normalizedValue = computed(() => Math.min(100, Math.max(0, props.modelValue || 0)))
+const normalizedValue = computed(() => Math.min(100, Math.max(0, modelValue || 0)))
 </script>
 
 <template>
@@ -21,7 +16,7 @@ const normalizedValue = computed(() => Math.min(100, Math.max(0, props.modelValu
     :aria-valuenow="normalizedValue"
     aria-valuemin="0"
     aria-valuemax="100"
-    :class="cn('relative h-2 w-full overflow-hidden rounded-full bg-secondary', props.class)"
+    :class="cn('relative h-2 w-full overflow-hidden rounded-full bg-secondary', className)"
   >
     <div
       data-slot="progress-indicator"

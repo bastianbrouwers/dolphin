@@ -25,18 +25,21 @@ const buttonSizeClasses = {
 type ButtonVariant = keyof typeof buttonVariantClasses
 type ButtonSize = keyof typeof buttonSizeClasses
 
-interface Props {
+const {
+  as = 'button',
+  type,
+  variant,
+  size,
+  class: className,
+  disabled
+} = defineProps<{
   as?: string
   type?: 'button' | 'submit' | 'reset'
   variant?: ButtonVariant
   size?: ButtonSize
   class?: HTMLAttributes['class']
   disabled?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  as: 'button'
-})
+}>()
 
 function buttonClasses(variant: ButtonVariant = 'default', size: ButtonSize = 'default') {
   return [
@@ -51,7 +54,7 @@ function buttonClasses(variant: ButtonVariant = 'default', size: ButtonSize = 'd
   <component
     :is="as"
     data-slot="button"
-    :class="cn(buttonClasses(variant, size), props.class)"
+    :class="cn(buttonClasses(variant, size), className)"
     :disabled="disabled"
     :type="type"
   >
