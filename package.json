@@ -63,7 +63,7 @@
     "cross-env": "^7.0.3",
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
-    "lucide-vue-next": "^0.468.0",
+    "@nuxt/icon": "^1.0.0",
     "nuxt": "^4.0.0",
     "shadcn-nuxt": "^2.7.4",
     "tailwind-merge": "^2.5.4",

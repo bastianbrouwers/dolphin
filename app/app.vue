@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Download, FolderOpen, Loader2, Maximize2, Minus, Moon, Music2, Play, Search, Sun, X } from 'lucide-vue-next'
 import appIcon from './assets/images/icon-app.png'
 
 const url = ref('')
@@ -171,8 +170,8 @@ function closeWindow() {
           variant="ghost"
           @click="toggleTheme"
         >
-          <Moon v-if="isLightMode" class="h-4 w-4" />
-          <Sun v-else class="h-4 w-4" />
+          <Icon v-if="isLightMode" class="h-4 w-4" name="lucide:moon" />
+          <Icon v-else class="h-4 w-4" name="lucide:sun" />
         </UiButton>
         <UiButton
           size="icon"
@@ -180,7 +179,7 @@ function closeWindow() {
           variant="ghost"
           @click="minimizeWindow"
         >
-          <Minus class="h-4 w-4" />
+          <Icon class="h-4 w-4" name="lucide:minus" />
         </UiButton>
         <UiButton
           size="icon"
@@ -188,7 +187,7 @@ function closeWindow() {
           variant="ghost"
           @click="toggleMaximizeWindow"
         >
-          <Maximize2 class="h-4 w-4" />
+          <Icon class="h-4 w-4" name="lucide:maximize-2" />
         </UiButton>
         <UiButton
           size="icon"
@@ -196,7 +195,7 @@ function closeWindow() {
           variant="ghost"
           @click="closeWindow"
         >
-          <X class="h-4 w-4" />
+          <Icon class="h-4 w-4" name="lucide:x" />
         </UiButton>
       </div>
     </div>
@@ -266,8 +265,8 @@ function closeWindow() {
                 type="submit"
                 variant="secondary"
               >
-                <Loader2 v-if="isSearching" class="h-4 w-4 animate-spin" />
-                <Search v-else class="h-4 w-4" />
+                <Icon v-if="isSearching" class="h-4 w-4 animate-spin" name="lucide:loader-2" />
+                <Icon v-else class="h-4 w-4" name="lucide:search" />
               </UiButton>
             </form>
 
@@ -294,7 +293,7 @@ function closeWindow() {
                     :src="item.thumbnail"
                   >
                   <div v-else class="flex h-full w-full items-center justify-center bg-secondary transition-colors group-hover/image:bg-secondary/80">
-                    <Music2 class="h-4 w-4 text-muted-foreground" />
+                    <Icon class="h-4 w-4 text-muted-foreground" name="lucide:music-2" />
                   </div>
                 </a>
                 <div class="min-w-0 flex-1">
@@ -318,7 +317,7 @@ function closeWindow() {
                   variant="ghost"
                   @click="downloadSearchResult(item)"
                 >
-                  <Download class="h-4 w-4" />
+                  <Icon class="h-4 w-4" name="lucide:download" />
                 </UiButton>
               </div>
             </div>
@@ -341,7 +340,7 @@ function closeWindow() {
                 variant="secondary"
                 @click="chooseDirectory"
               >
-                <FolderOpen class="h-4 w-4" />
+                <Icon class="h-4 w-4" name="lucide:folder-open" />
               </UiButton>
             </div>
           </div>
@@ -352,8 +351,8 @@ function closeWindow() {
             :disabled="!canConvert || !isElectron"
             @click="convert"
           >
-            <Loader2 v-if="isConverting" class="h-4 w-4 animate-spin" />
-            <Download v-else class="h-4 w-4" />
+            <Icon v-if="isConverting" class="h-4 w-4 animate-spin" name="lucide:loader-2" />
+            <Icon v-else class="h-4 w-4" name="lucide:download" />
             Convert / Download Audio
           </UiButton>
 
@@ -377,8 +376,8 @@ function closeWindow() {
               variant="secondary"
               @click="openResult"
             >
-              <Loader2 v-if="isOpeningResult" class="h-4 w-4 animate-spin" />
-              <Play v-else class="h-4 w-4" />
+              <Icon v-if="isOpeningResult" class="h-4 w-4 animate-spin" name="lucide:loader-2" />
+              <Icon v-else class="h-4 w-4" name="lucide:play" />
             </UiButton>
           </div>
           <UiProgress :model-value="status.percent" />
