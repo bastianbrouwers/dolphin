@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CheckCircle2, Download, FolderOpen, Loader2, Maximize2, Minus, Moon, Music2, Search, Sun, X } from 'lucide-vue-next'
 import { computed, onMounted, ref } from 'vue'
-import appIcon from './build/icon-app.png'
+import appIcon from './assets/images/icon-app.png'
 
 const url = ref('')
 const outputDir = ref('')
@@ -181,7 +181,7 @@ function closeWindow() {
           </div>
           <div class="space-y-2">
             <h1 class="text-3xl font-semibold tracking-normal sm:text-4xl">
-              Download clean MP3 audio from a YouTube link.
+             Convert your favorite Videos to MP3
             </h1>
             <p class="max-w-2xl text-sm leading-6 text-muted-foreground">
               Paste a URL, choose a folder, and keep the finished audio file on your machine.

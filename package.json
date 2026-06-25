@@ -30,7 +30,7 @@
     "files": [
       "electron/**/*",
       ".output/public/**/*",
-      "build/icon.ico",
+      "assets/images/icon.ico",
       "package.json",
       "node_modules/youtube-dl-exec/**/*",
       "node_modules/dargs/**/*",
@@ -41,7 +41,7 @@
       "node_modules/youtube-dl-exec/bin/**"
     ],
     "win": {
-      "icon": "icon.ico",
+      "icon": "assets/images/icon.ico",
       "target": [
         "portable"
       ]
