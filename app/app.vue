@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Download, FolderOpen, Loader2, Maximize2, Minus, Moon, Music2, Play, Search, Sun, X } from 'lucide-vue-next'
-import { computed, onMounted, ref } from 'vue'
 import appIcon from './assets/images/icon-app.png'
 
 const url = ref('')
@@ -166,7 +165,7 @@ function closeWindow() {
         Dolphin
       </div>
       <div class="no-drag flex items-center gap-1">
-        <UiButton
+        <Button
           size="icon"
           :title="isLightMode ? 'Switch to dark mode' : 'Switch to light mode'"
           variant="ghost"
@@ -174,24 +173,24 @@ function closeWindow() {
         >
           <Moon v-if="isLightMode" class="h-4 w-4" />
           <Sun v-else class="h-4 w-4" />
-        </UiButton>
-        <UiButton
+        </Button>
+        <Button
           size="icon"
           title="Minimize"
           variant="ghost"
           @click="minimizeWindow"
         >
           <Minus class="h-4 w-4" />
-        </UiButton>
-        <UiButton
+        </Button>
+        <Button
           size="icon"
           title="Fullscreen"
           variant="ghost"
           @click="toggleMaximizeWindow"
         >
           <Maximize2 class="h-4 w-4" />
-        </UiButton>
-        <UiButton
+        </Button>
+        <Button
           class="hover:bg-destructive hover:text-destructive-foreground"
           size="icon"
           title="Close"
@@ -199,7 +198,7 @@ function closeWindow() {
           @click="closeWindow"
         >
           <X class="h-4 w-4" />
-        </UiButton>
+        </Button>
       </div>
     </div>
 
@@ -241,7 +240,7 @@ function closeWindow() {
 
           <div v-if="activeTab === 'link'" class="space-y-2">
             <label class="text-sm font-medium" for="youtube-url">YouTube URL</label>
-            <UiInput
+            <Input
               id="youtube-url"
               v-model="url"
               :disabled="isConverting"
@@ -253,14 +252,14 @@ function closeWindow() {
           <div v-else class="space-y-3">
             <label class="text-sm font-medium" for="youtube-search">Search YouTube</label>
             <form class="flex gap-2" @submit.prevent="searchVideos">
-              <UiInput
+              <Input
                 id="youtube-search"
                 v-model="searchQuery"
                 :disabled="isSearching || isConverting"
                 placeholder="Search for a song, artist, or video"
                 type="search"
               />
-              <UiButton
+              <Button
                 class="shrink-0"
                 :disabled="!canSearch || isConverting || !isElectron"
                 size="icon"
@@ -270,7 +269,7 @@ function closeWindow() {
               >
                 <Loader2 v-if="isSearching" class="h-4 w-4 animate-spin" />
                 <Search v-else class="h-4 w-4" />
-              </UiButton>
+              </Button>
             </form>
 
             <div v-if="searchError" class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
@@ -315,13 +314,13 @@ function closeWindow() {
           <div class="space-y-2">
             <label class="text-sm font-medium" for="output-folder">Output folder</label>
             <div class="flex gap-2">
-              <UiInput
+              <Input
                 id="output-folder"
                 v-model="outputDir"
                 :disabled="isConverting"
                 placeholder="Choose a folder"
               />
-              <UiButton
+              <Button
                 class="shrink-0"
                 :disabled="isConverting || !isElectron"
                 size="icon"
@@ -330,11 +329,11 @@ function closeWindow() {
                 @click="chooseDirectory"
               >
                 <FolderOpen class="h-4 w-4" />
-              </UiButton>
+              </Button>
             </div>
           </div>
 
-          <UiButton
+          <Button
             v-if="activeTab === 'link'"
             class="w-full gap-2"
             :disabled="!canConvert || !isElectron"
@@ -343,7 +342,7 @@ function closeWindow() {
             <Loader2 v-if="isConverting" class="h-4 w-4 animate-spin" />
             <Download v-else class="h-4 w-4" />
             Convert / Download Audio
-          </UiButton>
+          </Button>
 
           <div v-if="!isElectron" class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
             Open this app in Electron to enable local conversion.
@@ -356,7 +355,7 @@ function closeWindow() {
               <p class="text-sm font-medium">Status</p>
               <p class="truncate text-sm text-muted-foreground">{{ status.text }}</p>
             </div>
-            <UiButton
+            <Button
               v-if="resultPath"
               class="shrink-0"
               :disabled="!canOpenResult || isOpeningResult"
@@ -367,9 +366,9 @@ function closeWindow() {
             >
               <Loader2 v-if="isOpeningResult" class="h-4 w-4 animate-spin" />
               <Play v-else class="h-4 w-4" />
-            </UiButton>
+            </Button>
           </div>
-          <UiProgress :model-value="status.percent" />
+          <Progress :model-value="status.percent" />
           <p v-if="resultPath" class="truncate text-xs text-muted-foreground">
             {{ resultPath }}
           </p>

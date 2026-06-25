@@ -55,7 +55,7 @@ function registerRendererProtocol() {
 }
 
 function getWindowIcon() {
-  return path.join(__dirname, '..', 'assets', 'images', 'icon.ico')
+  return path.join(__dirname, '..', 'app', 'assets', 'images', 'icon.ico')
 }
 
 function createWindow() {
