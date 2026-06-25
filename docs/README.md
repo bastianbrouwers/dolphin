@@ -1,4 +1,4 @@
-![App](/assets/images/icon-transparent-2.png)
+![App](/assets/images/icon-transparent-2-grey.png)
 # Dolphin  
 
 Dolphin is a small desktop media utility for saving audio from supported online video links and search results. It wraps a Nuxt interface in Electron, keeps the workflow local, and lets you choose where the finished file lands on your machine.
