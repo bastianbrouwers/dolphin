@@ -281,17 +281,31 @@ function closeWindow() {
                 :key="item.id"
                 class="flex items-center gap-3 rounded-md border bg-background p-2"
               >
-                <img
-                  v-if="item.thumbnail"
-                  :alt="item.title"
-                  class="h-14 w-24 shrink-0 rounded-sm object-cover"
-                  :src="item.thumbnail"
+                <a
+                  class="group/image block h-14 w-24 shrink-0 overflow-hidden rounded-sm transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  :href="item.url"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                <div v-else class="flex h-14 w-24 shrink-0 items-center justify-center rounded-sm bg-secondary">
-                  <Music2 class="h-4 w-4 text-muted-foreground" />
-                </div>
+                  <img
+                    v-if="item.thumbnail"
+                    :alt="item.title"
+                    class="h-full w-full object-cover transition-transform group-hover/image:scale-105"
+                    :src="item.thumbnail"
+                  >
+                  <div v-else class="flex h-full w-full items-center justify-center bg-secondary transition-colors group-hover/image:bg-secondary/80">
+                    <Music2 class="h-4 w-4 text-muted-foreground" />
+                  </div>
+                </a>
                 <div class="min-w-0 flex-1">
-                  <p class="truncate text-sm font-medium">{{ item.title }}</p>
+                  <a
+                    class="inline-block max-w-full truncate align-bottom text-sm font-medium transition-colors hover:text-muted-foreground dark:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    :href="item.url"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {{ item.title }}
+                  </a>
                   <p class="truncate text-xs text-muted-foreground">
                     {{ [item.channel, item.duration].filter(Boolean).join(' - ') }}
                   </p>
