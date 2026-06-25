@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('ytmp3', {
+contextBridge.exposeInMainWorld('dolphin', {
   chooseDirectory: () => ipcRenderer.invoke('dialog:chooseDirectory'),
   getDefaultDownloads: () => ipcRenderer.invoke('app:getDefaultDownloads'),
   convert: (payload) => ipcRenderer.invoke('convert:start', payload),

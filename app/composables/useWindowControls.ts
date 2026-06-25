@@ -1,14 +1,14 @@
 export function useWindowControls() {
   function minimizeWindow() {
-    window.ytmp3?.minimizeWindow()
+    window.dolphin?.minimizeWindow()
   }
 
   function toggleMaximizeWindow() {
-    window.ytmp3?.toggleMaximizeWindow()
+    window.dolphin?.toggleMaximizeWindow()
   }
 
   function closeWindow() {
-    window.ytmp3?.closeWindow()
+    window.dolphin?.closeWindow()
   }
 
   return {

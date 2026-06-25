@@ -16,12 +16,12 @@ export function useConversionResult({ isConverting, isElectron, resultPath, stat
   })
 
   async function openResult() {
-    if (!window.ytmp3 || !canOpenResult.value || isOpeningResult.value) return
+    if (!window.dolphin || !canOpenResult.value || isOpeningResult.value) return
 
     isOpeningResult.value = true
 
     try {
-      const result = await window.ytmp3.openFile(resultPath.value)
+      const result = await window.dolphin.openFile(resultPath.value)
       if (result.ok) return
 
       status.value = {

@@ -2,7 +2,7 @@ export {}
 
 declare global {
   interface Window {
-    ytmp3?: {
+    dolphin?: {
       chooseDirectory: () => Promise<string | null>
       getDefaultDownloads: () => Promise<string>
       convert: (payload: ConvertPayload) => Promise<ConvertResult>

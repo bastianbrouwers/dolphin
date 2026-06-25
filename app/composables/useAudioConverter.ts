@@ -13,16 +13,16 @@ export function useAudioConverter() {
   let removeProgressListener: (() => void) | undefined
 
   async function chooseDirectory() {
-    if (!window.ytmp3) return
+    if (!window.dolphin) return
 
-    const selected = await window.ytmp3.chooseDirectory()
+    const selected = await window.dolphin.chooseDirectory()
     if (selected) outputDir.value = selected
   }
 
   async function runConvert(targetUrl: string) {
     const trimmedUrl = targetUrl.trim()
 
-    if (!window.ytmp3 || !trimmedUrl || !outputDir.value.trim() || isConverting.value) return
+    if (!window.dolphin || !trimmedUrl || !outputDir.value.trim() || isConverting.value) return
 
     isConverting.value = true
     resultPath.value = ''
@@ -33,7 +33,7 @@ export function useAudioConverter() {
     }
 
     try {
-      const result = await window.ytmp3.convert({
+      const result = await window.dolphin.convert({
         url: trimmedUrl,
         outputDir: outputDir.value
       })
@@ -70,10 +70,10 @@ export function useAudioConverter() {
   }
 
   onMounted(async () => {
-    if (!window.ytmp3) return
+    if (!window.dolphin) return
 
-    outputDir.value = await window.ytmp3.getDefaultDownloads()
-    removeProgressListener = window.ytmp3.onProgress((event) => {
+    outputDir.value = await window.dolphin.getDefaultDownloads()
+    removeProgressListener = window.dolphin.onProgress((event) => {
       status.value = event
     })
   })

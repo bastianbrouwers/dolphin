@@ -6,13 +6,13 @@ export function useYouTubeSearch() {
   const canSearch = computed(() => searchQuery.value.trim().length > 0 && !isSearching.value)
 
   async function searchVideos() {
-    if (!window.ytmp3 || !canSearch.value) return
+    if (!window.dolphin || !canSearch.value) return
 
     isSearching.value = true
     searchError.value = ''
 
     try {
-      const result = await window.ytmp3.search({
+      const result = await window.dolphin.search({
         query: searchQuery.value.trim()
       })
 
