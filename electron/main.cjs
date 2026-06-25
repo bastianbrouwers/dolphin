@@ -211,14 +211,63 @@ function formatDuration(duration) {
   return `${minutes}:${String(seconds).padStart(2, '0')}`
 }
 
+const youtubeVideoIdPattern = /^[a-zA-Z0-9_-]{11}$/
+const youtubeSearchResultLimit = 8
+
+function getValidYouTubeVideoId(value) {
+  const id = String(value || '').trim()
+  return youtubeVideoIdPattern.test(id) ? id : ''
+}
+
+function extractYouTubeVideoId(value) {
+  const input = String(value || '').trim()
+  const rawId = getValidYouTubeVideoId(input)
+  if (rawId) return rawId
+
+  let url
+  try {
+    url = new URL(input)
+  } catch {
+    return ''
+  }
+
+  const hostname = url.hostname.toLowerCase().replace(/^www\./, '')
+  const pathParts = url.pathname.split('/').filter(Boolean)
+
+  if (hostname === 'youtu.be') {
+    return getValidYouTubeVideoId(pathParts[0])
+  }
+
+  if (hostname !== 'youtube.com' && !hostname.endsWith('.youtube.com')) {
+    return ''
+  }
+
+  if (url.pathname === '/watch') {
+    return getValidYouTubeVideoId(url.searchParams.get('v'))
+  }
+
+  if (['embed', 'live', 'shorts'].includes(pathParts[0])) {
+    return getValidYouTubeVideoId(pathParts[1])
+  }
+
+  return ''
+}
+
+function toSingleYouTubeVideoUrl(value) {
+  const videoId = extractYouTubeVideoId(value)
+  return videoId ? `https://www.youtube.com/watch?v=${videoId}` : ''
+}
+
 function normalizeSearchEntry(entry) {
-  const id = String(entry?.id || '')
-  const url = entry?.webpage_url || entry?.url || (id ? `https://www.youtube.com/watch?v=${id}` : '')
+  const videoId = extractYouTubeVideoId(entry?.id) || extractYouTubeVideoId(entry?.webpage_url) || extractYouTubeVideoId(entry?.url)
+  if (!videoId) return null
+
+  const url = toSingleYouTubeVideoUrl(videoId)
   const thumbnails = Array.isArray(entry?.thumbnails) ? entry.thumbnails : []
   const thumbnail = entry?.thumbnail || thumbnails.at(-1)?.url || ''
 
   return {
-    id: id || url,
+    id: videoId,
     title: String(entry?.title || 'Untitled video'),
     url,
     channel: entry?.channel || entry?.uploader || '',
@@ -279,7 +328,7 @@ ipcMain.handle('search:youtube', async (_event, payload) => {
   if (!query) return { ok: false, error: 'Type a search term first.' }
 
   try {
-    const result = await youtubeDl(`ytsearch8:${query}`, {
+    const result = await youtubeDl(`ytsearch${youtubeSearchResultLimit * 2}:${query}`, {
       dumpSingleJson: true,
       flatPlaylist: true,
       skipDownload: true,
@@ -288,7 +337,8 @@ ipcMain.handle('search:youtube', async (_event, payload) => {
     const entries = Array.isArray(result?.entries) ? result.entries : []
     const items = entries
       .map(normalizeSearchEntry)
-      .filter((item) => item.url)
+      .filter(Boolean)
+      .slice(0, youtubeSearchResultLimit)
 
     return { ok: true, items }
   } catch (error) {
@@ -299,8 +349,10 @@ ipcMain.handle('search:youtube', async (_event, payload) => {
 ipcMain.handle('convert:start', async (_event, payload) => {
   const url = String(payload?.url || '').trim()
   const outputDir = String(payload?.outputDir || '').trim()
+  const videoUrl = toSingleYouTubeVideoUrl(url)
 
   if (!url) return { ok: false, error: 'Paste a YouTube URL first.' }
+  if (!videoUrl) return { ok: false, error: 'Paste a single YouTube video URL, not a channel or playlist.' }
   if (!outputDir) return { ok: false, error: 'Choose an output folder first.' }
 
   try {
@@ -350,7 +402,7 @@ ipcMain.handle('convert:start', async (_event, payload) => {
       })
     }
 
-    const subprocess = youtubeDl.exec(url, options)
+    const subprocess = youtubeDl.exec(videoUrl, options)
 
     const handleOutput = (chunk) => {
       const text = chunk.toString()
