@@ -6,6 +6,7 @@
   "description": "Dolphin is a small desktop media utility for saving audio from supported online video links and search results. ",
   "main": "electron/main.cjs",
   "scripts": {
+    "prepare": "nuxt prepare",
     "dev": "concurrently -k \"nuxt dev --host 127.0.0.1 --port 3000\" \"wait-on http://127.0.0.1:3000 && cross-env ELECTRON_START_URL=http://127.0.0.1:3000 electron .\"",
     "dev:web": "nuxt dev --host 127.0.0.1 --port 3000",
     "pack": "npm run generate && electron-builder --dir",
@@ -30,7 +31,7 @@
     "files": [
       "electron/**/*",
       ".output/public/**/*",
-      "build/icon.ico",
+      "app/assets/images/icon.ico",
       "package.json",
       "node_modules/youtube-dl-exec/**/*",
       "node_modules/dargs/**/*",
@@ -41,7 +42,7 @@
       "node_modules/youtube-dl-exec/bin/**"
     ],
     "win": {
-      "icon": "icon.ico",
+      "icon": "app/assets/images/icon.ico",
       "target": [
         "portable"
       ]
@@ -56,7 +57,7 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "6.12.2",
-    "@oxc-parser/binding-win32-arm64-msvc": "^0.102.0",
+    "@oxc-parser/binding-win32-x64-msvc": "^0.102.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "concurrently": "^9.1.0",
@@ -64,7 +65,7 @@
     "electron": "^33.2.1",
     "electron-builder": "^25.1.8",
     "lucide-vue-next": "^0.468.0",
-    "nuxt": "3.14.1592",
+    "nuxt": "^4.0.0",
     "shadcn-nuxt": "^2.7.4",
     "tailwind-merge": "^2.5.4",
     "typescript": "^5.6.3",

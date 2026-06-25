@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { CheckCircle2, Download, FolderOpen, Loader2, Maximize2, Minus, Moon, Music2, Search, Sun, X } from 'lucide-vue-next'
-import { computed, onMounted, ref } from 'vue'
-import appIcon from './build/icon-app.png'
+import { Download, FolderOpen, Loader2, Maximize2, Minus, Moon, Music2, Play, Search, Sun, X } from 'lucide-vue-next'
+import appIcon from './assets/images/icon-app.png'
 
 const url = ref('')
 const outputDir = ref('')
@@ -17,10 +16,12 @@ const status = ref<ConvertProgress>({
 const resultPath = ref('')
 const isConverting = ref(false)
 const isSearching = ref(false)
+const isOpeningResult = ref(false)
 const isLightMode = ref(false)
 const isElectron = computed(() => Boolean(window.ytmp3))
 const canConvert = computed(() => url.value.trim().length > 0 && outputDir.value.trim().length > 0 && !isConverting.value)
 const canSearch = computed(() => searchQuery.value.trim().length > 0 && !isSearching.value)
+const canOpenResult = computed(() => Boolean(isElectron.value && resultPath.value && !isConverting.value))
 
 onMounted(async () => {
   document.documentElement.classList.add('dark')
@@ -43,6 +44,7 @@ async function runConvert(targetUrl: string) {
   if (!window.ytmp3 || !targetUrl.trim() || !outputDir.value.trim() || isConverting.value) return
 
   isConverting.value = true
+  isOpeningResult.value = false
   resultPath.value = ''
   status.value = {
     phase: 'starting',
@@ -106,6 +108,33 @@ async function downloadSearchResult(item: YouTubeSearchItem) {
   await runConvert(item.url)
 }
 
+async function openResult() {
+  if (!window.ytmp3 || !canOpenResult.value || isOpeningResult.value) return
+
+  isOpeningResult.value = true
+
+  try {
+    const result = await window.ytmp3.openFile(resultPath.value)
+    if (result.ok) return
+
+    status.value = {
+      phase: 'error',
+      text: result.error || 'Could not open downloaded file.',
+      percent: status.value.percent || 100,
+      outputFormat: status.value.outputFormat
+    }
+  } catch (error) {
+    status.value = {
+      phase: 'error',
+      text: error instanceof Error ? error.message : 'Could not open downloaded file.',
+      percent: status.value.percent || 100,
+      outputFormat: status.value.outputFormat
+    }
+  } finally {
+    isOpeningResult.value = false
+  }
+}
+
 function toggleTheme() {
   isLightMode.value = !isLightMode.value
   document.documentElement.classList.toggle('dark', !isLightMode.value)
@@ -136,7 +165,7 @@ function closeWindow() {
         Dolphin
       </div>
       <div class="no-drag flex items-center gap-1">
-        <UiButton
+        <Button
           size="icon"
           :title="isLightMode ? 'Switch to dark mode' : 'Switch to light mode'"
           variant="ghost"
@@ -144,24 +173,24 @@ function closeWindow() {
         >
           <Moon v-if="isLightMode" class="h-4 w-4" />
           <Sun v-else class="h-4 w-4" />
-        </UiButton>
-        <UiButton
+        </Button>
+        <Button
           size="icon"
           title="Minimize"
           variant="ghost"
           @click="minimizeWindow"
         >
           <Minus class="h-4 w-4" />
-        </UiButton>
-        <UiButton
+        </Button>
+        <Button
           size="icon"
           title="Fullscreen"
           variant="ghost"
           @click="toggleMaximizeWindow"
         >
           <Maximize2 class="h-4 w-4" />
-        </UiButton>
-        <UiButton
+        </Button>
+        <Button
           class="hover:bg-destructive hover:text-destructive-foreground"
           size="icon"
           title="Close"
@@ -169,7 +198,7 @@ function closeWindow() {
           @click="closeWindow"
         >
           <X class="h-4 w-4" />
-        </UiButton>
+        </Button>
       </div>
     </div>
 
@@ -181,7 +210,7 @@ function closeWindow() {
           </div>
           <div class="space-y-2">
             <h1 class="text-3xl font-semibold tracking-normal sm:text-4xl">
-              Download clean MP3 audio from a YouTube link.
+             Convert your favorite Videos to MP3
             </h1>
             <p class="max-w-2xl text-sm leading-6 text-muted-foreground">
               Paste a URL, choose a folder, and keep the finished audio file on your machine.
@@ -211,7 +240,7 @@ function closeWindow() {
 
           <div v-if="activeTab === 'link'" class="space-y-2">
             <label class="text-sm font-medium" for="youtube-url">YouTube URL</label>
-            <UiInput
+            <Input
               id="youtube-url"
               v-model="url"
               :disabled="isConverting"
@@ -223,14 +252,14 @@ function closeWindow() {
           <div v-else class="space-y-3">
             <label class="text-sm font-medium" for="youtube-search">Search YouTube</label>
             <form class="flex gap-2" @submit.prevent="searchVideos">
-              <UiInput
+              <Input
                 id="youtube-search"
                 v-model="searchQuery"
                 :disabled="isSearching || isConverting"
                 placeholder="Search for a song, artist, or video"
                 type="search"
               />
-              <UiButton
+              <Button
                 class="shrink-0"
                 :disabled="!canSearch || isConverting || !isElectron"
                 size="icon"
@@ -240,7 +269,7 @@ function closeWindow() {
               >
                 <Loader2 v-if="isSearching" class="h-4 w-4 animate-spin" />
                 <Search v-else class="h-4 w-4" />
-              </UiButton>
+              </Button>
             </form>
 
             <div v-if="searchError" class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
@@ -285,13 +314,13 @@ function closeWindow() {
           <div class="space-y-2">
             <label class="text-sm font-medium" for="output-folder">Output folder</label>
             <div class="flex gap-2">
-              <UiInput
+              <Input
                 id="output-folder"
                 v-model="outputDir"
                 :disabled="isConverting"
                 placeholder="Choose a folder"
               />
-              <UiButton
+              <Button
                 class="shrink-0"
                 :disabled="isConverting || !isElectron"
                 size="icon"
@@ -300,11 +329,11 @@ function closeWindow() {
                 @click="chooseDirectory"
               >
                 <FolderOpen class="h-4 w-4" />
-              </UiButton>
+              </Button>
             </div>
           </div>
 
-          <UiButton
+          <Button
             v-if="activeTab === 'link'"
             class="w-full gap-2"
             :disabled="!canConvert || !isElectron"
@@ -313,7 +342,7 @@ function closeWindow() {
             <Loader2 v-if="isConverting" class="h-4 w-4 animate-spin" />
             <Download v-else class="h-4 w-4" />
             Convert / Download Audio
-          </UiButton>
+          </Button>
 
           <div v-if="!isElectron" class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
             Open this app in Electron to enable local conversion.
@@ -326,12 +355,20 @@ function closeWindow() {
               <p class="text-sm font-medium">Status</p>
               <p class="truncate text-sm text-muted-foreground">{{ status.text }}</p>
             </div>
-            <CheckCircle2
-              v-if="status.phase === 'done'"
-              class="h-5 w-5 shrink-0 text-emerald-600"
-            />
+            <Button
+              v-if="resultPath"
+              class="shrink-0"
+              :disabled="!canOpenResult || isOpeningResult"
+              size="icon"
+              title="Play downloaded file"
+              variant="secondary"
+              @click="openResult"
+            >
+              <Loader2 v-if="isOpeningResult" class="h-4 w-4 animate-spin" />
+              <Play v-else class="h-4 w-4" />
+            </Button>
           </div>
-          <UiProgress :model-value="status.percent" />
+          <Progress :model-value="status.percent" />
           <p v-if="resultPath" class="truncate text-xs text-muted-foreground">
             {{ resultPath }}
           </p>

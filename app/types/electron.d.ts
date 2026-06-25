@@ -6,6 +6,7 @@ declare global {
       chooseDirectory: () => Promise<string | null>
       getDefaultDownloads: () => Promise<string>
       convert: (payload: ConvertPayload) => Promise<ConvertResult>
+      openFile: (filePath: string) => Promise<FileOpenResult>
       search: (payload: SearchPayload) => Promise<SearchResult>
       minimizeWindow: () => Promise<void>
       toggleMaximizeWindow: () => Promise<void>
@@ -49,6 +50,11 @@ declare global {
     ok: boolean
     filePath?: string
     outputFormat?: 'mp3' | 'audio'
+    error?: string
+  }
+
+  interface FileOpenResult {
+    ok: boolean
     error?: string
   }
 }

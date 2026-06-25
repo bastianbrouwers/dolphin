@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, net, protocol } = require('electron')
+const { app, BrowserWindow, dialog, ipcMain, net, protocol, shell } = require('electron')
 const path = require('node:path')
 const fs = require('node:fs')
 const { execFile } = require('node:child_process')
@@ -33,6 +33,7 @@ const youtubeDl = require('youtube-dl-exec')
 
 const execFileAsync = promisify(execFile)
 let mainWindow
+const completedDownloads = new Set()
 
 if (process.platform === 'win32') {
   app.setAppUserModelId('com.local.dolphin')
@@ -54,7 +55,7 @@ function registerRendererProtocol() {
 }
 
 function getWindowIcon() {
-  return path.join(__dirname, '..', 'build', 'icon.ico')
+  return path.join(__dirname, '..', 'app', 'assets', 'images', 'icon.ico')
 }
 
 function createWindow() {
@@ -222,6 +223,23 @@ ipcMain.handle('dialog:chooseDirectory', async () => {
 
 ipcMain.handle('app:getDefaultDownloads', () => app.getPath('downloads'))
 
+ipcMain.handle('file:open', async (_event, filePath) => {
+  const requestedPath = String(filePath || '').trim()
+  const targetPath = requestedPath ? path.resolve(requestedPath) : ''
+
+  if (!targetPath || !completedDownloads.has(targetPath)) {
+    return { ok: false, error: 'No downloaded file is available to play.' }
+  }
+
+  if (!fs.existsSync(targetPath)) {
+    completedDownloads.delete(targetPath)
+    return { ok: false, error: 'The downloaded file could not be found.' }
+  }
+
+  const error = await shell.openPath(targetPath)
+  return error ? { ok: false, error } : { ok: true }
+})
+
 ipcMain.handle('window:minimize', (event) => {
   BrowserWindow.fromWebContents(event.sender)?.minimize()
 })
@@ -349,12 +367,14 @@ ipcMain.handle('convert:start', async (_event, payload) => {
     }
 
     const doneText = canConvertToMp3 ? 'MP3 saved successfully.' : 'Source audio saved successfully.'
+    completedDownloads.add(path.resolve(finalPath))
     sendProgress({ phase: 'done', percent: 100, text: doneText, outputFormat })
     return { ok: true, filePath: finalPath, outputFormat }
   } catch (error) {
     const completedPath = await waitForCompletedAudio(outputDir, beforeFiles, finalPath, preferredExtension)
     if (completedPath) {
       const doneText = canConvertToMp3 ? 'MP3 saved successfully.' : 'Source audio saved successfully.'
+      completedDownloads.add(path.resolve(completedPath))
       sendProgress({ phase: 'done', percent: 100, text: doneText, outputFormat })
       return { ok: true, filePath: completedPath, outputFormat }
     }
