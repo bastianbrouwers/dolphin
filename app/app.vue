@@ -275,7 +275,7 @@ function closeWindow() {
               {{ searchError }}
             </div>
 
-            <div v-if="searchResults.length > 0" class="max-h-80 space-y-2 overflow-y-auto pr-1">
+            <div v-if="searchResults.length > 0" class="scrollbar-stable max-h-80 space-y-2 overflow-y-auto pr-1">
               <div
                 v-for="item in searchResults"
                 :key="item.id"

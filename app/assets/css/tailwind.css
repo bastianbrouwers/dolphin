@@ -19,6 +19,8 @@
     --border: 214 18% 88%;
     --input: 214 18% 88%;
     --ring: 220 18% 20%;
+    --scrollbar-thumb: 214 12% 74%;
+    --scrollbar-thumb-hover: 214 12% 62%;
     --radius: 0.5rem;
   }
 
@@ -38,10 +40,35 @@
     --border: 220 13% 22%;
     --input: 220 13% 22%;
     --ring: 210 20% 86%;
+    --scrollbar-thumb: 220 10% 36%;
+    --scrollbar-thumb-hover: 220 10% 46%;
   }
 
   * {
     @apply border-border;
+    scrollbar-color: hsl(var(--scrollbar-thumb)) transparent;
+    scrollbar-width: thin;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-color: hsl(var(--scrollbar-thumb));
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--scrollbar-thumb-hover));
   }
 
   html {
@@ -68,5 +95,9 @@
 
   .no-drag {
     -webkit-app-region: no-drag;
+  }
+
+  .scrollbar-stable {
+    scrollbar-gutter: stable;
   }
 }
