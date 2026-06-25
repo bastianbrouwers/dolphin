@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('ytmp3', {
   chooseDirectory: () => ipcRenderer.invoke('dialog:chooseDirectory'),
   getDefaultDownloads: () => ipcRenderer.invoke('app:getDefaultDownloads'),
   convert: (payload) => ipcRenderer.invoke('convert:start', payload),
+  openFile: (filePath) => ipcRenderer.invoke('file:open', filePath),
   search: (payload) => ipcRenderer.invoke('search:youtube', payload),
   minimizeWindow: () => ipcRenderer.invoke('window:minimize'),
   toggleMaximizeWindow: () => ipcRenderer.invoke('window:toggleMaximize'),
