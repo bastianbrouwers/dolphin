@@ -32,6 +32,7 @@ if (!process.env.YOUTUBE_DL_DIR && fs.existsSync(packagedYtDlpDir)) {
 const youtubeDl = require('youtube-dl-exec')
 
 const execFileAsync = promisify(execFile)
+const darkBackgroundColor = '#12151c'
 let mainWindow
 const completedDownloads = new Set()
 
@@ -66,13 +67,26 @@ function createWindow() {
     minHeight: 560,
     title: 'Dolphin',
     icon: getWindowIcon(),
-    backgroundColor: '#020817',
+    backgroundColor: darkBackgroundColor,
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false
     }
+  })
+
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.type !== 'keyDown' || input.key !== 'F12') return
+
+    event.preventDefault()
+
+    if (mainWindow.webContents.isDevToolsOpened()) {
+      mainWindow.webContents.closeDevTools()
+      return
+    }
+
+    mainWindow.webContents.openDevTools({ mode: 'detach' })
   })
 
   const startUrl = process.env.ELECTRON_START_URL

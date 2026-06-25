@@ -154,7 +154,7 @@ function closeWindow() {
 </script>
 
 <template>
-  <main class="min-h-screen bg-background">
+  <main class="min-h-[100dvh] bg-background">
     <div class="drag-region flex h-12 items-center justify-between border-b px-5">
       <div class="flex items-center gap-2 text-sm font-medium">
         <img
@@ -201,7 +201,7 @@ function closeWindow() {
       </div>
     </div>
 
-    <section class="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-3xl flex-col justify-center px-6 py-10">
+    <section class="mx-auto flex min-h-[calc(100dvh-3rem)] w-full max-w-3xl flex-col justify-center px-6 py-10">
       <div class="space-y-8">
         <div class="space-y-3">
           <div class="inline-flex items-center rounded-md border px-2.5 py-1 text-xs text-muted-foreground">
