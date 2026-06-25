@@ -58,7 +58,6 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "6.12.2",
     "@oxc-parser/binding-win32-x64-msvc": "^0.102.0",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "concurrently": "^9.1.0",
     "cross-env": "^7.0.3",
