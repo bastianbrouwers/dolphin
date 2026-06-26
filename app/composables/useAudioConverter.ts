@@ -9,6 +9,8 @@ export function useAudioConverter() {
   const resultPath = ref('')
   const isConverting = ref(false)
   const canConvert = computed(() => url.value.trim().length > 0 && outputDir.value.trim().length > 0 && !isConverting.value)
+  const isOpeningResult = ref(false)
+  const canOpenResult = computed(() => Boolean(resultPath.value && !isConverting.value))
 
   let removeProgressListener: (() => void) | undefined
 
@@ -69,6 +71,33 @@ export function useAudioConverter() {
     await runConvert(url.value)
   }
 
+  async function openResult() {
+    if (!window.dolphin || !canOpenResult.value || isOpeningResult.value) return
+
+    isOpeningResult.value = true
+
+    try {
+      const result = await window.dolphin.openFile(resultPath.value)
+      if (result.ok) return
+
+      status.value = {
+        phase: 'error',
+        text: result.error || 'Could not open downloaded file.',
+        percent: status.value.percent || 100,
+        outputFormat: status.value.outputFormat
+      }
+    } catch (error) {
+      status.value = {
+        phase: 'error',
+        text: error instanceof Error ? error.message : 'Could not open downloaded file.',
+        percent: status.value.percent || 100,
+        outputFormat: status.value.outputFormat
+      }
+    } finally {
+      isOpeningResult.value = false
+    }
+  }
+
   onMounted(async () => {
     if (!window.dolphin) return
 
@@ -82,15 +111,25 @@ export function useAudioConverter() {
     removeProgressListener?.()
   })
 
+  watch(isConverting, (converting) => {
+    if (converting) isOpeningResult.value = false
+  })
+
   return {
-    canConvert,
-    chooseDirectory,
-    convert,
-    isConverting,
+    url,
     outputDir,
-    resultPath,
-    runConvert,
     status,
-    url
+    resultPath,
+    isConverting,
+    isOpeningResult,
+
+    canConvert,
+    canOpenResult,
+
+    chooseDirectory,
+    runConvert,
+    convert,
+    openResult
   }
 }
+

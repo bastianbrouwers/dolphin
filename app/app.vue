@@ -13,7 +13,10 @@ const {
   canConvert,
   chooseDirectory,
   convert,
+  canOpenResult,
+  isOpeningResult,
   isConverting,
+  openResult,
   outputDir,
   resultPath,
   runConvert,
@@ -29,16 +32,6 @@ const {
   searchResults,
   searchVideos
 } = useYouTubeSearch()
-
-const {
-  canOpenResult,
-  isOpeningResult,
-  openResult
-} = useConversionResult({
-  isConverting,
-  resultPath,
-  status
-})
 
 async function downloadSearchResult(item: YouTubeSearchItem) {
   url.value = item.url

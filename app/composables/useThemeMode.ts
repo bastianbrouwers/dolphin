@@ -12,6 +12,7 @@ export function useThemeMode() {
 
   return {
     isLightMode,
+
     toggleTheme
   }
 }

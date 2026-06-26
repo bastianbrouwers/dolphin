@@ -33,11 +33,14 @@ export function useYouTubeSearch() {
   }
 
   return {
-    canSearch,
-    isSearching,
-    searchError,
     searchQuery,
     searchResults,
+    searchError,
+    isSearching,
+
+    canSearch,
+
     searchVideos
   }
 }
+
