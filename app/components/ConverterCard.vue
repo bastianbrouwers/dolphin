@@ -2,7 +2,6 @@
 type ConverterTab = 'link' | 'search'
 
 const {
-  activeTab,
   url,
   outputDir,
   searchQuery,
@@ -13,7 +12,6 @@ const {
   canConvert = false,
   canSearch = false
 } = defineProps<{
-  activeTab: ConverterTab
   url: string
   outputDir: string
   searchQuery: string
@@ -25,12 +23,13 @@ const {
   canSearch?: boolean
 }>()
 
+const activeTab = ref<ConverterTab>('link')
+
 const emit = defineEmits<{
   convert: []
   'choose-directory': []
   'download-search-result': [item: YouTubeSearchItem]
   search: []
-  'update:activeTab': [value: ConverterTab]
   'update:outputDir': [value: string]
   'update:searchQuery': [value: string]
   'update:url': [value: string]
@@ -39,24 +38,7 @@ const emit = defineEmits<{
 
 <template>
   <div class="space-y-4 rounded-lg border bg-card p-5 text-card-foreground shadow-sm">
-    <div class="grid grid-cols-2 rounded-md bg-secondary p-1">
-      <button
-        class="h-8 rounded-sm text-sm font-medium transition-colors"
-        :class="activeTab === 'link' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
-        type="button"
-        @click="emit('update:activeTab', 'link')"
-      >
-        Link
-      </button>
-      <button
-        class="h-8 rounded-sm text-sm font-medium transition-colors"
-        :class="activeTab === 'search' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'"
-        type="button"
-        @click="emit('update:activeTab', 'search')"
-      >
-        Search
-      </button>
-    </div>
+    <ConverterCardPagination v-model:active-tab="activeTab" />
 
     <div v-if="activeTab === 'link'" class="space-y-2">
       <label class="text-sm font-medium" for="youtube-url">YouTube URL</label>

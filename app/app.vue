@@ -6,10 +6,6 @@ const {
 } = useElectronBridge()
 
 const {
-  activeTab
-} = useConverterTabs()
-
-const {
   canConvert,
   chooseDirectory,
   convert,
@@ -74,7 +70,6 @@ async function downloadSearchResult(item: YouTubeSearchItem) {
 
         <template v-else>
           <ConverterCard
-            v-model:active-tab="activeTab"
             v-model:output-dir="outputDir"
             v-model:search-query="searchQuery"
             v-model:url="url"
