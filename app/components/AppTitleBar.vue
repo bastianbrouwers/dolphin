@@ -1,15 +1,18 @@
 <script setup lang="ts">
-const { appIcon, isLightMode = false } = defineProps<{
+const { appIcon } = defineProps<{
   appIcon: string
-  isLightMode?: boolean
 }>()
 
-const emit = defineEmits<{
-  close: []
-  minimize: []
-  'toggle-maximize': []
-  'toggle-theme': []
-}>()
+const {
+  isLightMode,
+  toggleTheme
+} = useThemeMode()
+
+const {
+  closeWindow,
+  minimizeWindow,
+  toggleMaximizeWindow
+} = useWindowControls()
 </script>
 
 <template>
@@ -27,7 +30,7 @@ const emit = defineEmits<{
         size="icon"
         :title="isLightMode ? 'Switch to dark mode' : 'Switch to light mode'"
         variant="ghost"
-        @click="emit('toggle-theme')"
+        @click="toggleTheme"
       >
         <Icon v-if="isLightMode" class="h-4 w-4" name="lucide:moon" />
         <Icon v-else class="h-4 w-4" name="lucide:sun" />
@@ -36,7 +39,7 @@ const emit = defineEmits<{
         size="icon"
         title="Minimize"
         variant="ghost"
-        @click="emit('minimize')"
+        @click="minimizeWindow"
       >
         <Icon class="h-4 w-4" name="lucide:minus" />
       </UiButton>
@@ -44,7 +47,7 @@ const emit = defineEmits<{
         size="icon"
         title="Fullscreen"
         variant="ghost"
-        @click="emit('toggle-maximize')"
+        @click="toggleMaximizeWindow"
       >
         <Icon class="h-4 w-4" name="lucide:maximize-2" />
       </UiButton>
@@ -52,7 +55,7 @@ const emit = defineEmits<{
         size="icon"
         title="Close"
         variant="ghost"
-        @click="emit('close')"
+        @click="closeWindow"
       >
         <Icon class="h-4 w-4" name="lucide:x" />
       </UiButton>

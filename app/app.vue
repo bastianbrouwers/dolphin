@@ -45,29 +45,11 @@ async function downloadSearchResult(item: YouTubeSearchItem) {
   url.value = item.url
   await runConvert(item.url)
 }
-
-const {
-  isLightMode,
-  toggleTheme
-} = useThemeMode()
-
-const {
-  closeWindow,
-  minimizeWindow,
-  toggleMaximizeWindow
-} = useWindowControls()
 </script>
 
 <template>
   <main class="min-h-[100dvh] bg-background">
-    <AppTitleBar
-      :app-icon="appIcon"
-      :is-light-mode="isLightMode"
-      @close="closeWindow"
-      @minimize="minimizeWindow"
-      @toggle-maximize="toggleMaximizeWindow"
-      @toggle-theme="toggleTheme"
-    />
+    <AppTitleBar :app-icon="appIcon" />
 
     <section class="mx-auto flex min-h-[calc(100dvh-3rem)] w-full max-w-3xl flex-col justify-center px-6 py-10">
       <div class="space-y-8">
