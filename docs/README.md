@@ -85,7 +85,7 @@ Build artifacts are written to `release/`.
 
 ## Tech Stack
 
-- Nuxt 3 and Vue 3
+- Nuxt 4 and Vue 3
 - Electron
 - Tailwind CSS
 - shadcn-style local components
