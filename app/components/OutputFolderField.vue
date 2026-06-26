@@ -1,8 +1,7 @@
 <script setup lang="ts">
-const { outputDir, isConverting = false, isElectron = false } = defineProps<{
+const { outputDir, isConverting = false } = defineProps<{
   outputDir: string
   isConverting?: boolean
-  isElectron?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -24,7 +23,7 @@ const emit = defineEmits<{
       />
       <UiButton
         class="shrink-0"
-        :disabled="isConverting || !isElectron"
+        :disabled="isConverting"
         size="icon"
         title="Choose folder"
         variant="secondary"

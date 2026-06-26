@@ -6,7 +6,6 @@ const {
   isSearching = false,
   isConverting = false,
   canSearch = false,
-  isElectron = false,
   outputDir = ''
 } = defineProps<{
   searchQuery: string
@@ -15,7 +14,6 @@ const {
   isSearching?: boolean
   isConverting?: boolean
   canSearch?: boolean
-  isElectron?: boolean
   outputDir?: string
 }>()
 
@@ -40,7 +38,7 @@ const emit = defineEmits<{
       />
       <UiButton
         class="shrink-0"
-        :disabled="!canSearch || isConverting || !isElectron"
+        :disabled="!canSearch || isConverting"
         size="icon"
         title="Search"
         type="submit"
@@ -59,7 +57,7 @@ const emit = defineEmits<{
       <SearchResultItem
         v-for="item in searchResults"
         :key="item.id"
-        :is-disabled="isConverting || !outputDir || !isElectron"
+        :is-disabled="isConverting || !outputDir"
         :item="item"
         @download="emit('download', $event)"
       />

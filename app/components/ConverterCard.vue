@@ -10,7 +10,6 @@ const {
   searchError = '',
   isConverting = false,
   isSearching = false,
-  isElectron = false,
   canConvert = false,
   canSearch = false
 } = defineProps<{
@@ -22,7 +21,6 @@ const {
   searchError?: string
   isConverting?: boolean
   isSearching?: boolean
-  isElectron?: boolean
   canConvert?: boolean
   canSearch?: boolean
 }>()
@@ -76,7 +74,6 @@ const emit = defineEmits<{
       v-else
       :can-search="canSearch"
       :is-converting="isConverting"
-      :is-electron="isElectron"
       :is-searching="isSearching"
       :output-dir="outputDir"
       :search-error="searchError"
@@ -89,7 +86,6 @@ const emit = defineEmits<{
 
     <OutputFolderField
       :is-converting="isConverting"
-      :is-electron="isElectron"
       :output-dir="outputDir"
       @choose-directory="emit('choose-directory')"
       @update:output-dir="emit('update:outputDir', $event)"
@@ -98,16 +94,12 @@ const emit = defineEmits<{
     <UiButton
       v-if="activeTab === 'link'"
       class="w-full"
-      :disabled="!canConvert || !isElectron"
+      :disabled="!canConvert"
       @click="emit('convert')"
     >
       <Icon v-if="isConverting" class="h-4 w-4 animate-spin" name="lucide:loader-2" />
       <Icon v-else class="h-4 w-4" name="lucide:download" />
       Convert / Download Audio
     </UiButton>
-
-    <div v-if="!isElectron" class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-      Open this app in Electron to enable local conversion.
-    </div>
   </div>
 </template>

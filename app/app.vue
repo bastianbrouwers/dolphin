@@ -36,7 +36,6 @@ const {
   openResult
 } = useConversionResult({
   isConverting,
-  isElectron,
   resultPath,
   status
 })
@@ -67,31 +66,45 @@ async function downloadSearchResult(item: YouTubeSearchItem) {
           </div>
         </div>
 
-        <ConverterCard
-          v-model:active-tab="activeTab"
-          v-model:output-dir="outputDir"
-          v-model:search-query="searchQuery"
-          v-model:url="url"
-          :can-convert="canConvert"
-          :can-search="canSearch"
-          :is-converting="isConverting"
-          :is-electron="isElectron"
-          :is-searching="isSearching"
-          :search-error="searchError"
-          :search-results="searchResults"
-          @choose-directory="chooseDirectory"
-          @convert="convert"
-          @download-search-result="downloadSearchResult"
-          @search="searchVideos"
-        />
+        <div
+          v-if="!isElectron"
+          class="flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
+        >
+          <Icon class="mt-0.5 h-4 w-4 shrink-0" name="lucide:monitor-down" />
+          <div class="space-y-1">
+            <p class="font-medium">Open Dolphin in the desktop app.</p>
+            <p class="text-destructive/80">
+              Local folder access, search, conversion, and playback are available only through Electron.
+            </p>
+          </div>
+        </div>
 
-        <ConversionStatus
-          :can-open-result="canOpenResult"
-          :is-opening-result="isOpeningResult"
-          :result-path="resultPath"
-          :status="status"
-          @open-result="openResult"
-        />
+        <template v-else>
+          <ConverterCard
+            v-model:active-tab="activeTab"
+            v-model:output-dir="outputDir"
+            v-model:search-query="searchQuery"
+            v-model:url="url"
+            :can-convert="canConvert"
+            :can-search="canSearch"
+            :is-converting="isConverting"
+            :is-searching="isSearching"
+            :search-error="searchError"
+            :search-results="searchResults"
+            @choose-directory="chooseDirectory"
+            @convert="convert"
+            @download-search-result="downloadSearchResult"
+            @search="searchVideos"
+          />
+
+          <ConversionStatus
+            :can-open-result="canOpenResult"
+            :is-opening-result="isOpeningResult"
+            :result-path="resultPath"
+            :status="status"
+            @open-result="openResult"
+          />
+        </template>
       </div>
     </section>
   </main>

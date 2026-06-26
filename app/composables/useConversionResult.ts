@@ -1,15 +1,14 @@
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 
 interface UseConversionResultOptions {
   isConverting: Ref<boolean>
-  isElectron: ComputedRef<boolean>
   resultPath: Ref<string>
   status: Ref<ConvertProgress>
 }
 
-export function useConversionResult({ isConverting, isElectron, resultPath, status }: UseConversionResultOptions) {
+export function useConversionResult({ isConverting, resultPath, status }: UseConversionResultOptions) {
   const isOpeningResult = ref(false)
-  const canOpenResult = computed(() => Boolean(isElectron.value && resultPath.value && !isConverting.value))
+  const canOpenResult = computed(() => Boolean(resultPath.value && !isConverting.value))
 
   watch(isConverting, (converting) => {
     if (converting) isOpeningResult.value = false
