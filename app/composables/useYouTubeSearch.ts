@@ -5,7 +5,7 @@ export function useYouTubeSearch() {
   const isSearching = ref(false)
   const canSearch = computed(() => searchQuery.value.trim().length > 0 && !isSearching.value)
 
-  async function searchVideos() {
+  async function search() {
     if (!window.dolphin || !canSearch.value) return
 
     isSearching.value = true
@@ -40,7 +40,7 @@ export function useYouTubeSearch() {
 
     canSearch,
 
-    searchVideos
+    search
   }
 }
 

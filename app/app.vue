@@ -26,7 +26,7 @@ const {
   searchError,
   searchQuery,
   searchResults,
-  searchVideos
+  search
 } = useYouTubeSearch()
 
 async function downloadSearchResult(item: YouTubeSearchItem) {
@@ -82,7 +82,7 @@ async function downloadSearchResult(item: YouTubeSearchItem) {
             @choose-directory="chooseDirectory"
             @convert="convert"
             @download-search-result="downloadSearchResult"
-            @search="searchVideos"
+            @search="search"
           />
 
           <ConversionStatus
