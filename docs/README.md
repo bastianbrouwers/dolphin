@@ -1,11 +1,11 @@
 ![App](/app/assets/images/icon-transparent-2-grey.png)
 # Dolphin  
 
-Dolphin is a small desktop media utility for saving audio from supported online video links and search results. It wraps a Nuxt interface in Electron, keeps the workflow local, and lets you choose where the finished file lands on your machine.
+Dolphin is a small desktop app for saving audio from supported online video links and search results. It wraps a Nuxt interface in Electron, keeps the workflow local, and lets you choose where the finished file lands on your machine.
 
 The app is intentionally simple: paste a link or search from inside the app, choose an output folder, and start the job. Dolphin shows progress while it fetches the source audio and, when the required audio tools are available, converts it into an MP3.
 
-Use Dolphin only with media you own, have permission to archive, or are otherwise allowed to save under the source platform's terms.
+Use Dolphin only with media you own, have permission to archive, or are otherwise allowed to save under the source platform's terms!
 
 ## Preview
 
@@ -47,19 +47,6 @@ npm run dev
 ```
 
 This starts Nuxt on `http://127.0.0.1:3000` and opens Electron against that local dev server.
-
-Run only the web UI:
-
-```bash
-npm run dev:web
-```
-
-Generate the Nuxt output and launch Electron against the generated files:
-
-```bash
-npm run generate
-npm run start
-```
 
 ## Build
 
